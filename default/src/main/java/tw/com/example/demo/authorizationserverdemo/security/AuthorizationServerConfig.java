@@ -50,7 +50,8 @@ public class AuthorizationServerConfig {
   @Order(Ordered.HIGHEST_PRECEDENCE)
   public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
       throws Exception {
-    final OAuth2AuthorizationServerConfigurer configurer = OAuth2AuthorizationServerConfigurer.authorizationServer();
+    final OAuth2AuthorizationServerConfigurer configurer =
+        OAuth2AuthorizationServerConfigurer.authorizationServer();
     http.securityMatcher(configurer.getEndpointsMatcher())
         .with(
             configurer,
@@ -65,7 +66,11 @@ public class AuthorizationServerConfig {
     return http.build();
   }
 
-  /** oauth client registered repository */
+  /**
+   * oauth client registered repository
+   *
+   * <p>demo用才hardcode，應透過環境變數等外部注入
+   */
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
     // token expire time setting
@@ -99,6 +104,12 @@ public class AuthorizationServerConfig {
     return new InMemoryRegisteredClientRepository(oidcClient);
   }
 
+  /**
+   * 構建並提供一個 {@link JWKSource} 實例，該實例包含 RSA 公私鑰對作為 JSON Web Key (JWK) 集合的一部分。 此方法使用動態生成的 RSA 金鑰對來創建
+   * JWK 集合，並將其包裝為一個不可變的 JWKSource 物件。
+   *
+   * @return 一個用於處理安全性的 {@link JWKSource} 實例，包含了動態生成的 RSA 公私鑰對 JWK 集合。
+   */
   @Bean
   public JWKSource<SecurityContext> jwkSource() {
     final KeyPair keyPair = generateRsaKey();
@@ -113,6 +124,12 @@ public class AuthorizationServerConfig {
     return new ImmutableJWKSet<>(jwkSet);
   }
 
+  /**
+   * 生成一個新的 RSA 公私鑰對。
+   *
+   * @return 回傳包含動態生成的 RSA 公鑰與私鑰的 {@link KeyPair} 物件。
+   * @throws IllegalStateException 當生成過程中發生錯誤時拋出。
+   */
   private static KeyPair generateRsaKey() {
     try {
       final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");

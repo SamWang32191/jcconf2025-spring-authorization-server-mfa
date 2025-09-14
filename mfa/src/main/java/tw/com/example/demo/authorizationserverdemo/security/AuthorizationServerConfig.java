@@ -79,7 +79,11 @@ public class AuthorizationServerConfig {
     return http.build();
   }
 
-  /** oauth client registered repository */
+  /**
+   * oauth client registered repository
+   *
+   * <p>demo用才hardcode，應透過環境變數等外部注入
+   */
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
     // token expire time setting
