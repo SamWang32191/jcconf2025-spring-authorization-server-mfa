@@ -21,3 +21,5 @@
 #### 啟動有2FA的SAS
 `mvn clean compile spring-boot:run -pl default`
 `mvn clean compile spring-boot:run -pl mfa`
+
+<img width="1782" height="1079" alt="截圖 2025-09-14 14 04 56" src="https://github.com/user-attachments/assets/244b6946-9f29-4671-8492-43afe8e7d7b5" />
