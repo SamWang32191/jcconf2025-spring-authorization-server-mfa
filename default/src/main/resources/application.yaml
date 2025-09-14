@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: authorization-server-demo
+
+
+logging:
+  group:
+    app: tw.com.example.demo
+  level:
+    app: debug
+    org.springframework.security: trace
