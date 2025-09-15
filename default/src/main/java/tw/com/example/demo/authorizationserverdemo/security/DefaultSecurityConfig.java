@@ -38,11 +38,10 @@ public class DefaultSecurityConfig {
     http.authorizeHttpRequests(
             (authorize) ->
                 authorize
-                    .requestMatchers("/assets/**", "/login", "/mfa")
+                    .requestMatchers("/assets/**", "/login")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
         .formLogin(formLogin -> formLogin.loginPage("/login"))
         .exceptionHandling(
             exceptionHandling ->
