@@ -1,7 +1,11 @@
-# JCConf2025 法規掰掰！Spring Authorization Server 的 OTP 整合快攻
+[![](https://img.shields.io/badge/JCConf-2025-green?style=for-the-badge)](https://jcconf.tw/2025/)
+
+
+# JCConf2025 法規掰掰！<br>Spring Authorization Server 的 OTP 整合快攻
 >  在 OIDC 的認證流程中，透過客製化 Spring Authorization Server，加入第二個認證因子 (OTP)，以達成部分法規，規範登入時需要 MFA (Multi-factor Authentication) 要求的快速方案。
 
-
+### References: 
+[Spring-Authorization-Server Examples](https://github.com/spring-projects/spring-authorization-server/tree/1.5.x/samples/demo-authorizationserver)
 
 ### Directories
 ```
