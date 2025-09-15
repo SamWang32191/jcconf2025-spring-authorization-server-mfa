@@ -32,8 +32,13 @@ public class DefaultSecurityConfig {
   public SecurityFilterChain defaultSecurityFilterChain(
       HttpSecurity http, CustomAuthenticationProvider authenticationProvider) throws Exception {
 
-    http.securityMatcher("/assets/**", "/login")
-        .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+    http.authorizeHttpRequests(
+            (authorize) ->
+                authorize
+                    .requestMatchers("/assets/**", "/login", "/mfa")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .authenticationProvider(authenticationProvider) // <--- 在這裡註冊我們的 Provider
         .formLogin(
             formLogin ->

@@ -35,7 +35,13 @@ public class DefaultSecurityConfig {
   @Bean
   @Order(Ordered.HIGHEST_PRECEDENCE + 1)
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.securityMatcher("/assets/**", "/login")
+    http.authorizeHttpRequests(
+            (authorize) ->
+                authorize
+                    .requestMatchers("/assets/**", "/login", "/mfa")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
         .formLogin(formLogin -> formLogin.loginPage("/login"))
         .exceptionHandling(
