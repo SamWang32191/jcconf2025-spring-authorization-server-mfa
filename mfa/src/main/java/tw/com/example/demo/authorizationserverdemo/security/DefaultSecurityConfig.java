@@ -28,12 +28,11 @@ public class DefaultSecurityConfig {
    * @throws Exception 當執行配置過程中發生異常時拋出。
    */
   @Bean
-  @Order(Ordered.HIGHEST_PRECEDENCE + 1)
   public SecurityFilterChain defaultSecurityFilterChain(
       HttpSecurity http, CustomAuthenticationProvider authenticationProvider) throws Exception {
 
     http.authorizeHttpRequests(
-            (authorize) ->
+            authorize ->
                 authorize
                     .requestMatchers("/assets/**", "/login", "/mfa")
                     .permitAll()
@@ -44,13 +43,9 @@ public class DefaultSecurityConfig {
             formLogin ->
                 formLogin
                     .loginPage("/login")
-                    .successHandler(new CustomLoginSuccessHandler()) // <--- 在這裡註冊我們的 Handler
-            )
-        .exceptionHandling(
-            exceptionHandling ->
-                exceptionHandling.defaultAuthenticationEntryPointFor(
-                    new LoginUrlAuthenticationEntryPoint("/login"),
-                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+                    .successHandler(new CustomLoginSuccessHandler())  // <--- 在這裡註冊我們的 Handler
+        );
+
     return http.build();
   }
 

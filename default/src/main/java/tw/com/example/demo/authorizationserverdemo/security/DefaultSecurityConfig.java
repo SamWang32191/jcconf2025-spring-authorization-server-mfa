@@ -33,21 +33,17 @@ public class DefaultSecurityConfig {
    * @throws Exception 當執行配置過程中發生異常時拋出。
    */
   @Bean
-  @Order(Ordered.HIGHEST_PRECEDENCE + 1)
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(
-            (authorize) ->
-                authorize
-                    .requestMatchers("/assets/**", "/login")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated())
-        .formLogin(formLogin -> formLogin.loginPage("/login"))
-        .exceptionHandling(
-            exceptionHandling ->
-                exceptionHandling.defaultAuthenticationEntryPointFor(
-                    new LoginUrlAuthenticationEntryPoint("/login"),
-                    new MediaTypeRequestMatcher(MediaType.TEXT_HTML)));
+    http
+        .authorizeHttpRequests(authorize ->
+            authorize
+                .requestMatchers("/assets/**", "/login").permitAll()
+                .anyRequest().authenticated()
+        )
+        .formLogin(formLogin ->
+            formLogin
+                .loginPage("/login")
+        );
     return http.build();
   }
 
