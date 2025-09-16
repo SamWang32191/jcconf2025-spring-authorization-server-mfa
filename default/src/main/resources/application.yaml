@@ -1,11 +1,35 @@
-spring:
-  application:
-    name: authorization-server-demo
-
-
 logging:
   group:
     app: tw.com.example.demo
   level:
     app: debug
     org.springframework.security: trace
+
+spring:
+  application:
+    name: authorization-server-demo
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          oidc-client:
+            registration:
+              client-id: "client-id"
+              client-secret: "{noop}123456"
+              client-authentication-methods:
+                - "client_secret_basic"
+              authorization-grant-types:
+                - "authorization_code"
+                - "refresh_token"
+              redirect-uris:
+                - "https://oauth.pstmn.io/v1/callback"
+              scopes:
+                - "openid"
+                - "profile"
+            require-authorization-consent: false
+            require-proof-key: true
+            token:
+              access-token-time-to-live:
+                seconds: 300
+              refresh-token-time-to-live:
+                seconds: 1800
