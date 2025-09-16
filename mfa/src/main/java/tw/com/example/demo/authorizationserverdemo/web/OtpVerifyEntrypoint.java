@@ -24,7 +24,7 @@ public class OtpVerifyEntrypoint {
 
   private final OtpService otpService;
 
-  @PostMapping("/verify-mfa")
+  @PostMapping("/mfa")
   public String verifyMFa(
       @RequestParam String otp,
       HttpSession session,

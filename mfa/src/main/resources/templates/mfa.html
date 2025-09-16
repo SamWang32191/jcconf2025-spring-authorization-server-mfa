@@ -10,7 +10,8 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin w-100 m-auto" method="post" action="/verify-mfa">
+    <form class="form-signin w-100 m-auto" method="post" action="/mfa">
+        <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <h1 class="h3 mb-3 fw-normal">雙因素驗證</h1>
         <p>我們已將驗證碼發送到您的註冊信箱。</p>
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
