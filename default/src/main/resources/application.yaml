@@ -29,7 +29,5 @@ spring:
             require-authorization-consent: false
             require-proof-key: true
             token:
-              access-token-time-to-live:
-                seconds: 300
-              refresh-token-time-to-live:
-                seconds: 1800
+              access-token-time-to-live: PT5M
+              refresh-token-time-to-live: PT30M

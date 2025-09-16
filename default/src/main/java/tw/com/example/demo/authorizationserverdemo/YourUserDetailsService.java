@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/** 你原有的 UserDetailsService，只要註冊成Bean即可 */
 @Service
 public class YourUserDetailsService implements UserDetailsService {
 
