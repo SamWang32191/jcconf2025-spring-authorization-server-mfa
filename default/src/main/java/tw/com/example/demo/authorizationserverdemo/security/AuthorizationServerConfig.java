@@ -50,14 +50,19 @@ public class AuthorizationServerConfig {
   @Order(Ordered.HIGHEST_PRECEDENCE)
   public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
       throws Exception {
-    final OAuth2AuthorizationServerConfigurer configurer =
+    OAuth2AuthorizationServerConfigurer configurer =
         OAuth2AuthorizationServerConfigurer.authorizationServer();
+
     http.securityMatcher(configurer.getEndpointsMatcher())
         .with(
             configurer,
             serverConfigurer ->
-                serverConfigurer.oidc(Customizer.withDefaults())) // Enable OpenID Connect 1.0
-        .authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
+                serverConfigurer.oidc(Customizer.withDefaults()) // Enable OpenID Connect 1.0
+            )
+        .authorizeHttpRequests(
+            authorize ->
+                authorize.anyRequest().authenticated()
+        )
         .exceptionHandling(
             (exceptions) ->
                 exceptions.defaultAuthenticationEntryPointFor(
