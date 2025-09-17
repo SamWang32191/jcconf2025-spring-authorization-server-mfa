@@ -1,4 +1,5 @@
 [![](https://img.shields.io/badge/JCConf-2025-green?style=for-the-badge)](https://jcconf.tw/2025/)
+[![](https://img.shields.io/badge/pdf-.%2Fdocs-yellow?style=for-the-badge)](./docs)
 
 
 # JCConf2025 法規掰掰！<br>Spring Authorization Server 的 OTP 整合快攻
