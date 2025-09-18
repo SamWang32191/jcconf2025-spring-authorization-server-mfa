@@ -1,0 +1,58 @@
+@startuml
+hide footbox
+skinparam ResponseMessageBelowArrow true
+skinparam SequenceMessageAlign center
+
+
+actor "Client" as Client
+participant "UsernamePassword\nAuthenticationFilter" as Filter
+participant "ProviderManager" as Manager
+participant "<back:#fff3cd><color:red>**CustomAuthenticationProvider**</color></back>" as Provider
+participant "UserDetailsService" as UDS
+participant "<back:#fff3cd><color:red>**CustomLoginSuccessHandler**</color></back>" as SuccessHandler
+participant "OtpVerifyEntrypoint" as OVE
+participant "OtpService" as OTS
+
+Client -> Filter : POST /login\n(username, password)
+activate Filter
+
+Filter -> Manager : UsernamePassword\nAuthenticationToken
+activate Manager
+
+Manager -> Provider : can authenticate ?
+activate Provider
+
+Provider -> UDS : loadUserByUsername
+activate UDS
+UDS --> Provider : \n UserDetail
+deactivate UDS
+
+Provider -> Provider : \n\ncan authenticate ?
+Provider -[#red]-> OTS: \n <size:16><back:#fff3cd><color:red>**發送OTP**</color></back>
+Provider -[#red]--> Manager : <size:16><back:#fff3cd><color:red>**MfaAuthentication**</color></back>\n<back:#fff3cd><color:red>**帶著authenticated token**</color></back>
+deactivate Provider
+
+Manager --> Filter : MfaAuthentication
+deactivate Manager
+
+Filter -> SuccessHandler : onAuthenticationSuccess
+deactivate Filter
+activate SuccessHandler
+note right of SuccessHandler
+<size:16> save
+<size:16> origin redirect url
+<size:16> in session
+end note
+SuccessHandler -[#red]-> Client : <size:16><back:#fff3cd><color:red>**302 Redirect to otp(mfa) page**</color></back>
+deactivate SuccessHandler
+activate Client
+Client -> OVE : \n <size:16>驗證OTP
+deactivate Client
+activate OVE
+OVE -> OTS :
+activate OTS
+OTS --> OVE : 驗證OTP
+deactivate OTS
+OVE -[#red]-> Client: <size:16><back:#fff3cd><color:red>**302 Redirect to origin redirect url in session**
+deactivate OVE
+@enduml

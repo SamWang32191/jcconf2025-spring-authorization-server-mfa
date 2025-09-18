@@ -1,0 +1,49 @@
+@startuml
+title OAuth 2.0 / OIDC 授權碼流程（Authorization Code Flow）
+hide footbox
+skinparam SequenceMessageAlign center
+
+actor User as U
+participant Client as C
+participant "Authorization Server" as AS
+participant "Resource Server" as RS
+
+U -> C : 要訪問受保護的Resource
+activate C
+note right of C
+沒發現有效的token
+end note
+C -> AS : GET /oauth2/authorize
+deactivate C
+activate AS
+AS -> U : 請登入\n(Redirect to login page)
+deactivate AS
+activate U
+U --> AS : 輸入帳號密碼
+deactivate U
+activate AS
+AS -> U : 請雙因子驗證\n(Redirect to MFA page)
+deactivate AS
+activate U
+U --> AS : MFA 驗證
+deactivate U
+activate AS
+AS --> C : 認證與授權成功\n(重導回 Client，附帶 Code)
+deactivate AS
+activate C
+C -> AS : 用 Code 換取 Token\n(POST /token)
+deactivate C
+activate AS
+AS --> C : 回傳 ID Token 與 Access Token
+deactivate AS
+activate C
+C -> RS : 以 Access Token 取得資料 (Authorization: Bearer ...)
+deactivate C
+activate RS
+RS --> C : 受保護的Resource
+deactivate RS
+activate C
+C --> U : 顯示資料
+deactivate C
+
+@enduml

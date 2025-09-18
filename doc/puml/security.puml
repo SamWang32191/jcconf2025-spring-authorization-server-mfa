@@ -1,0 +1,42 @@
+@startuml
+title Spring Security 的預設 Form Login 流程
+hide footbox
+skinparam ResponseMessageBelowArrow true
+skinparam SequenceMessageAlign center
+
+actor "Client" as Client
+participant "UsernamePassword\nAuthenticationFilter" as Filter
+participant "ProviderManager" as Manager
+participant "DaoAuthenticationProvider" as Provider
+participant "UserDetailsService" as UDS
+participant "SavedRequestAware\nAuthenticationSuccessHandler" as SuccessHandler
+
+Client -> Filter : POST /login\n(username, password)
+activate Filter
+
+Filter -> Manager : UsernamePassword\nAuthenticationToken
+activate Manager
+
+Manager -> Provider : can authenticate ?
+activate Provider
+
+Provider -> UDS : loadUserByUsername
+activate UDS
+UDS --> Provider : \nreturn UserDetail
+deactivate UDS
+
+Provider -> Provider : \n\ncan authenticate ?
+Provider --> Manager : \n Authentication (authenticated)
+deactivate Provider
+
+Manager --> Filter : Authentication
+deactivate Manager
+
+Filter -> SuccessHandler : onAuthenticationSuccess
+deactivate Filter
+activate SuccessHandler
+SuccessHandler --> Client : \n302 Redirect to client redirect url
+
+deactivate SuccessHandler
+
+@enduml

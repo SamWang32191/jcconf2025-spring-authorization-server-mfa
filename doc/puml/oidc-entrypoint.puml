@@ -1,0 +1,31 @@
+@startuml OAuth2 Authorization Code Flow with MFA
+
+participant User
+participant Client
+participant "Authorization Server" as AuthServer
+
+note over Client, AuthServer: OAuth2 Authorization Code Flow with MFA
+
+Client -> AuthServer: GET /oauth2/authorize
+note right of AuthServer: 沒登入 Access Denied
+AuthServer -> Client: Redirecting to /login
+
+User -> Client: 輸入帳密
+Client -> AuthServer: POST /login
+note right of AuthServer: 驗證帳密成功
+AuthServer -> Client: Redirecting to /mfa
+
+User -> Client: 輸入雙因子驗證
+Client -> AuthServer: POST /mfa
+note right of AuthServer: 驗證雙因子成功
+AuthServer -> Client: 302 Redirect to /oauth2/authorize?&continue
+
+Client -> AuthServer: GET /oauth2/authorize?&continue
+note right of AuthServer: 發現是登入狀態
+AuthServer -> Client: 302 Redirect to https://client/callback?code=XXXX
+
+note over Client: Client 拿code換token
+Client -> AuthServer: POST /oauth2/token
+AuthServer -> Client: Access Token + Refresh Token
+
+@enduml
